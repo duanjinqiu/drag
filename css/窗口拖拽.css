@@ -1,0 +1,9 @@
+.win {
+  width: 300px;
+  height: 200px;
+  background-color: #bfbfbf;
+  border-radius: 10px;
+  position: absolute;
+  top: 200px;
+  left: 500px;
+}
