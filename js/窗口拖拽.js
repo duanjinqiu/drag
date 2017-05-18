@@ -14,6 +14,11 @@ window.onload = function() {
     // div高度
     var divHeight = div.clientHeight;
 
+    window.onresize = function() {
+        windowWidth = document.documentElement.clientWidth;
+        windowHeight = document.documentElement.clientHeight;
+
+    }
 
     div.onmousedown = function(e) {
         var e = e || window.event;
