@@ -1,4 +1,4 @@
-.win {
+.div {
   width: 300px;
   height: 200px;
   background-color: #bfbfbf;
@@ -6,4 +6,5 @@
   position: absolute;
   top: 200px;
   left: 500px;
+  cursor: move;
 }

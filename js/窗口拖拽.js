@@ -3,47 +3,76 @@
  */
 window.onload = function() {
     var drag;
-    var tx, ty;
-    var win = document.getElementsByClassName('win')[0];
-    var lefttop = document.getElementsByClassName('lefttop')[0];
-    var divlefttop = document.getElementsByClassName('divlefttop')[0];
-    var clicklefttop = document.getElementsByClassName('clicklefttop')[0];
+    // 鼠标与div左边与上边的距离
+    var mouseOffsetX, mouseOffsetY;
+    // 鼠标与窗口左边上边的距离
+    var mouseX, mouseY;
 
-    win.onmousedown = function(e) {
-        var event = e || window.event;
-        // 鼠标按下的那一刻距离可视区域左边的距离
-        var x = e.clientX;
-        // 鼠标按下的那一刻距离可视区域上边的距离
-        var y = e.clientY;
+    var div = document.getElementsByClassName('div')[0];
+    // div宽度
+    var divWidth = div.clientWidth;
+    // div高度
+    var divHeight = div.clientHeight;
+
+
+    div.onmousedown = function(e) {
+        var e = e || window.event;
+        // 鼠标距离左边的距离
+        var x = e.pageX;
+        // 鼠标距离上边的距离
+        var y = e.pageY;
+        // 鼠标距离div的宽度
+        mouseOffsetX = x - div.offsetLeft;
+        // 鼠标距离div的高度
+        mouseOffsetY = y - div.offsetTop;
+        // 获取可视区域的宽度
+        var windowWidth = document.documentElement.clientWidth;
+        // 获取可视窗口的高度
+        var windowHeight = document.documentElement.clientHeight;
+        // div到了边界时与左边的距离
+        maxdivX = windowWidth - divWidth;
+        // div到了边界时与上边的距离
+        maxdivY = windowHeight - divHeight;
         drag = true;
-        // 鼠标按下那一刻与div的左边border的距离
-        tx = x - win.offsetLeft;
-        // 鼠标按下那一刻与div的上边border的距离
-        ty = y - win.offsetTop;
-
-        lefttop.innerHTML = '鼠标距离可视区域左边的距离: ' + x + '，鼠标距离可视区域上边的距离: ' + y;
-
-        clicklefttop.innerHTML = '鼠标与div的左边border的距离: ' + tx + '，鼠标与div的上边border的距离：' + ty;
-
 
         window.onmousemove = function (e) {
             e = e || window.event;
+            // 鼠标距离左边的距离
+            mouseX = e.pageX;
+            // 鼠标距离上边的距离
+            mouseY = e.pageY;
+
+            // 拖动的div的左边距
+            movedivX = mouseX - mouseOffsetX;
+            // 拖动的div的上边距
+            movedivY = mouseY - mouseOffsetY;
             if (drag) {
-                // 鼠标移动的时候距离可视区域左边的距离
-                var mx = e.clientX;
 
-                win.style.left = mx - tx + 'px';
-                // 鼠标移动的时候距离可视区域上边的距离
-                var my = e.clientY;
-                win.style.top = my - ty + 'px';
+                // 这里用div的距离左边的宽度来判断是不行的，要使用鼠标距离左边的宽度和鼠标距离上边的高度判断才行
+                // if (div.offsetLeft < windowWidth - divWidth) {
+                //     div.style.left = mx - tx + 'px';
+                // }
 
-                divlefttop.innerHTML = 'div的左边框距离可视区域左边框的距离是: ' + win.offsetLeft + '，div的上边框距离可视区域顶部的距离是: ' + win.offsetTop;
+                // 利用鼠标距离左边的距离来判断div拖动的距离
+                // mouseX - mouseOffsetX是div距离左边的宽度
+                // windowWidth - divWidth是div距离左边的宽度
+                if (movedivX < maxdivX && movedivX > 0) {
+                    div.style.left = movedivX + "px";
+                }
+                if (movedivY < maxdivY && movedivY > 0) {
+                    div.style.top = mouseY - mouseOffsetY + 'px';
+                }
 
+                // 鼠标松开，停止拖动
+                document.onmouseup = function () {
+                    drag = false;
+                }
             }
-            window.onmouseup = function () {
-                drag = false;
-            }
+
         }
+    }
 
+    function closeDialog() {
+        console.log("close");
     }
 }
